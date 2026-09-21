@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}IT ServiceDesk{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+    <div class="hero-text">
+        <span class="badge">IT Support Management</span>
+
+        <h1>Support einfach und übersichtlich verwalten.</h1>
+
+        <p>
+            Mit dem IT ServiceDesk können Supportanfragen zentral erfasst,
+            kategorisiert und bearbeitet werden.
+        </p>
+
+        {% if current_user.is_authenticated %}
+
+            <a class="button primary" href="{{ url_for('main.dashboard') }}">
+                Zum Dashboard
+            </a>
+
+        {% else %}
+
+            <a class="button primary" href="{{ url_for('auth.register') }}">
+                Jetzt registrieren
+            </a>
+
+            <a class="button secondary" href="{{ url_for('auth.login') }}">
+                Anmelden
+            </a>
+
+        {% endif %}
+    </div>
+
+    <div class="hero-card">
+        <h3>IT ServiceDesk</h3>
+
+        <div class="feature">
+            <strong>Tickets erfassen</strong>
+            <span>IT-Probleme strukturiert dokumentieren</span>
+        </div>
+
+        <div class="feature">
+            <strong>Prioritäten verwalten</strong>
+            <span>Von niedrig bis kritisch</span>
+        </div>
+
+        <div class="feature">
+            <strong>Status verfolgen</strong>
+            <span>Offen, in Bearbeitung, gelöst oder geschlossen</span>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

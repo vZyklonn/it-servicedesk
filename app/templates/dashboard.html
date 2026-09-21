@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | IT ServiceDesk{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <span class="badge">Dashboard</span>
+
+        <h1>Willkommen, {{ current_user.username }}</h1>
+
+        <p>
+            Hier findest du eine Übersicht über deine Support-Tickets.
+        </p>
+
+        <a class="button primary"
+           href="{{ url_for('main.create_ticket') }}">
+            + Neues Ticket
+        </a>
+    </div>
+
+</div>
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+        <span>Tickets gesamt</span>
+        <strong>{{ total }}</strong>
+    </div>
+
+    <div class="stat-card">
+        <span>Offen</span>
+        <strong>{{ open_count }}</strong>
+    </div>
+
+    <div class="stat-card">
+        <span>In Bearbeitung</span>
+        <strong>{{ progress_count }}</strong>
+    </div>
+
+    <div class="stat-card">
+        <span>Gelöst</span>
+        <strong>{{ resolved_count }}</strong>
+    </div>
+
+</div>
+
+<div class="content-card">
+
+    <h2>Meine Tickets</h2>
+
+    {% if tickets %}
+
+        {% for ticket in tickets %}
+
+            <div class="feature">
+
+                <a href="{{ url_for('main.ticket_detail', ticket_id=ticket.id) }}">
+                    <strong>#{{ ticket.id }} – {{ ticket.title }}</strong>
+                </a>
+
+                <span>
+                    {{ ticket.category.name }}
+                    |
+                    Priorität: {{ ticket.priority }}
+                    |
+                    Status: {{ ticket.status }}
+                </span>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>Du hast momentan noch keine Tickets erfasst.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

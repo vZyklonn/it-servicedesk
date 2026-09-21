@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Anmelden | IT ServiceDesk{% endblock %}
+
+{% block content %}
+
+<div class="auth-wrapper">
+
+    <div class="form-card">
+
+        <h1>Anmelden</h1>
+
+        <p class="form-intro">
+            Melde dich mit deinem Benutzerkonto an.
+        </p>
+
+        <form method="POST">
+
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                {{ form.username.label }}
+
+                {{ form.username(
+                    class="form-control",
+                    placeholder="Benutzername"
+                ) }}
+
+                {% for error in form.username.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.password.label }}
+
+                {{ form.password(
+                    class="form-control",
+                    placeholder="Passwort"
+                ) }}
+
+                {% for error in form.password.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            {{ form.submit(class="button primary full-width") }}
+
+        </form>
+
+        <p class="form-footer">
+            Noch kein Konto?
+            <a href="{{ url_for('auth.register') }}">Registrieren</a>
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

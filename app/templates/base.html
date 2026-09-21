@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}IT ServiceDesk{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="container nav-content">
+
+        <a class="logo"
+           href="{{ url_for('main.index') }}">
+            IT ServiceDesk
+        </a>
+
+        <div class="nav-links">
+
+            {% if current_user.is_authenticated %}
+
+                <a href="{{ url_for('main.dashboard') }}">
+                    Dashboard
+                </a>
+
+                <a href="{{ url_for('main.create_ticket') }}">
+                    Neues Ticket
+                </a>
+
+                <a href="{{ url_for('main.tickets') }}">
+                    Tickets
+                </a>
+
+                <a href="{{ url_for('auth.logout') }}">
+                    Abmelden
+                </a>
+
+            {% else %}
+
+                <a href="{{ url_for('auth.login') }}">
+                    Anmelden
+                </a>
+
+                <a class="nav-button"
+                   href="{{ url_for('auth.register') }}">
+                    Registrieren
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    {% block content %}{% endblock %}
+
+</main>
+
+
+<footer>
+
+    <div class="container">
+        IT ServiceDesk – Praxisarbeit Datenbanken und Webentwicklung
+    </div>
+
+</footer>
+
+</body>
+</html>

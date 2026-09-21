@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Ticket #{{ ticket.id }} | IT ServiceDesk{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <span class="badge">Ticket #{{ ticket.id }}</span>
+
+    <h1>{{ ticket.title }}</h1>
+</div>
+
+<div class="content-card">
+
+    <p><strong>Kategorie:</strong> {{ ticket.category.name }}</p>
+
+    <p><strong>Priorität:</strong> {{ ticket.priority }}</p>
+
+    <p><strong>Status:</strong> {{ ticket.status }}</p>
+
+    <p><strong>Beschreibung:</strong></p>
+
+    <p>{{ ticket.description }}</p>
+
+    <p>
+        <strong>Erstellt:</strong>
+        {{ ticket.created_at.strftime('%d.%m.%Y %H:%M') }}
+    </p>
+
+    <a class="button primary"
+       href="{{ url_for('main.edit_ticket', ticket_id=ticket.id) }}">
+        Ticket bearbeiten
+    </a>
+
+    <form method="POST"
+          action="{{ url_for('main.delete_ticket', ticket_id=ticket.id) }}"
+          style="display:inline-block; margin-left:10px;">
+
+        {{ delete_form.hidden_tag() }}
+
+        {{ delete_form.submit(
+            class="button secondary",
+            onclick="return confirm('Ticket wirklich löschen?');"
+        ) }}
+
+    </form>
+
+</div>
+
+{% endblock %}

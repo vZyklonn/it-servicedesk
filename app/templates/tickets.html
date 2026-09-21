@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}Tickets | IT ServiceDesk{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <span class="badge">Tickets</span>
+    <h1>Meine Tickets</h1>
+
+    <p>Verwalte und filtere deine Supportanfragen.</p>
+
+    <a class="button primary"
+       href="{{ url_for('main.create_ticket') }}">
+        + Neues Ticket
+    </a>
+</div>
+
+
+<div class="content-card">
+
+    <form method="GET" class="filter-form">
+
+        <div>
+            <label for="status">Status</label>
+
+            <select name="status"
+                    id="status"
+                    class="form-control">
+
+                <option value="">Alle Status</option>
+
+                <option value="open"
+                    {% if status_filter == 'open' %}selected{% endif %}>
+                    Offen
+                </option>
+
+                <option value="in_progress"
+                    {% if status_filter == 'in_progress' %}selected{% endif %}>
+                    In Bearbeitung
+                </option>
+
+                <option value="resolved"
+                    {% if status_filter == 'resolved' %}selected{% endif %}>
+                    Gelöst
+                </option>
+
+                <option value="closed"
+                    {% if status_filter == 'closed' %}selected{% endif %}>
+                    Geschlossen
+                </option>
+
+            </select>
+        </div>
+
+
+        <div>
+            <label for="priority">Priorität</label>
+
+            <select name="priority"
+                    id="priority"
+                    class="form-control">
+
+                <option value="">Alle Prioritäten</option>
+
+                <option value="low"
+                    {% if priority_filter == 'low' %}selected{% endif %}>
+                    Niedrig
+                </option>
+
+                <option value="medium"
+                    {% if priority_filter == 'medium' %}selected{% endif %}>
+                    Mittel
+                </option>
+
+                <option value="high"
+                    {% if priority_filter == 'high' %}selected{% endif %}>
+                    Hoch
+                </option>
+
+                <option value="critical"
+                    {% if priority_filter == 'critical' %}selected{% endif %}>
+                    Kritisch
+                </option>
+
+            </select>
+        </div>
+
+
+        <div class="filter-buttons">
+
+            <button type="submit"
+                    class="button primary">
+                Filtern
+            </button>
+
+            <a href="{{ url_for('main.tickets') }}"
+               class="button secondary">
+                Zurücksetzen
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<div class="content-card">
+
+    {% if tickets %}
+
+        {% for ticket in tickets %}
+
+            <div class="ticket-row">
+
+                <div>
+
+                    <a class="ticket-title"
+                       href="{{ url_for('main.ticket_detail', ticket_id=ticket.id) }}">
+                        #{{ ticket.id }} – {{ ticket.title }}
+                    </a>
+
+                    <div class="ticket-meta">
+                        {{ ticket.category.name }}
+                        ·
+                        {{ ticket.created_at.strftime('%d.%m.%Y %H:%M') }}
+                    </div>
+
+                </div>
+
+
+                <div class="ticket-labels">
+
+                    {% if ticket.priority == "low" %}
+                        <span class="label priority-low">Niedrig</span>
+                    {% elif ticket.priority == "medium" %}
+                        <span class="label priority-medium">Mittel</span>
+                    {% elif ticket.priority == "high" %}
+                        <span class="label priority-high">Hoch</span>
+                    {% elif ticket.priority == "critical" %}
+                        <span class="label priority-critical">Kritisch</span>
+                    {% endif %}
+
+
+                    {% if ticket.status == "open" %}
+                        <span class="label status-open">Offen</span>
+                    {% elif ticket.status == "in_progress" %}
+                        <span class="label status-progress">In Bearbeitung</span>
+                    {% elif ticket.status == "resolved" %}
+                        <span class="label status-resolved">Gelöst</span>
+                    {% elif ticket.status == "closed" %}
+                        <span class="label status-closed">Geschlossen</span>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>Für diesen Filter wurden keine Tickets gefunden.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
